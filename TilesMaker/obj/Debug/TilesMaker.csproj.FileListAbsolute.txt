@@ -1,0 +1,9 @@
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.TilesMaker.resources
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.Properties.Resources.resources
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.csproj.GenerateResource.Cache
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.csproj.CoreCompileInputs.cache
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\bin\Debug\TilesMaker.exe.config
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\bin\Debug\TilesMaker.exe
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\bin\Debug\TilesMaker.pdb
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.exe
+F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Debug\TilesMaker.pdb
