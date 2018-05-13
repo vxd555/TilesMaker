@@ -147,7 +147,6 @@ namespace TilesMaker
                     fs.Close();
                 }
             }
-
         }
 
         private unsafe void LoadButton_Click(object sender, EventArgs e)

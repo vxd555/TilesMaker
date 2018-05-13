@@ -64,14 +64,12 @@ namespace TilesMaker
         {
             undo.Undo();
         }
-        //--
 
         //ponów działanie na obrazku
         private void RedoButton_Click(object sender, EventArgs e)
         {
             undo.Redo();
         }
-        //--
 
         //obróć w lewo
         private void RootLeft_Click(object sender, EventArgs e)
@@ -79,12 +77,12 @@ namespace TilesMaker
             RotL();
         }
 
-        public void RotL()
+        public void RotL(bool undoAdd = true)
         {
             sourcePicture.RotateFlip(RotateFlipType.Rotate270FlipNone);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.rotateLeft);
+            if (undoAdd) undo.CreateUndo(TransformType.rotateLeft);
         }
 
         //obróć w prawo
@@ -93,12 +91,12 @@ namespace TilesMaker
             RotR();
         }
 
-        public void RotR()
+        public void RotR(bool undoAdd = true)
         {
             sourcePicture.RotateFlip(RotateFlipType.Rotate90FlipNone);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.rotateRight);
+            if (undoAdd) undo.CreateUndo(TransformType.rotateRight);
         }
 
         //odbicie lustrzane horyzontalne
@@ -107,12 +105,12 @@ namespace TilesMaker
             MirrH();
         }
 
-        public void MirrH()
+        public void MirrH(bool undoAdd = true)
         {
             sourcePicture.RotateFlip(RotateFlipType.RotateNoneFlipX);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.mirrorHorizontal);
+            if (undoAdd) undo.CreateUndo(TransformType.mirrorHorizontal);
         }
 
         //odbicie lustrzane wertykalne
@@ -121,12 +119,12 @@ namespace TilesMaker
             MirrV();
         }
 
-        public void MirrV()
+        public void MirrV(bool undoAdd = true)
         {
             sourcePicture.RotateFlip(RotateFlipType.RotateNoneFlipY);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.mirrorVertical);
+            if (undoAdd) undo.CreateUndo(TransformType.mirrorVertical);
         }
 
         // gloabal size  scale     amount
@@ -342,7 +340,7 @@ namespace TilesMaker
             ShiftLeft();
         }
 
-        public unsafe void ShiftLeft()
+        public unsafe void ShiftLeft(bool undoAdd = true)
         {
             //blokowanie grafiki
             BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -372,7 +370,7 @@ namespace TilesMaker
             sourcePicture.UnlockBits(bmSrc);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.shiftLeft);
+            if (undoAdd) undo.CreateUndo(TransformType.shiftLeft);
         }
 
         //przesówanie grafiki w górę o jeden pixel
@@ -381,7 +379,7 @@ namespace TilesMaker
             ShiftUp();
         }
 
-        public unsafe void ShiftUp()
+        public unsafe void ShiftUp(bool undoAdd = true)
         {
             //blokowanie grafiki
             BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -411,7 +409,7 @@ namespace TilesMaker
             sourcePicture.UnlockBits(bmSrc);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.shiftUp);
+            if (undoAdd) undo.CreateUndo(TransformType.shiftUp);
         }
 
         //przesówanie grafiki w dół o jeden pixel
@@ -420,7 +418,7 @@ namespace TilesMaker
             ShiftDown();
         }
 
-        public unsafe void ShiftDown()
+        public unsafe void ShiftDown(bool undoAdd = true)
         {
             //blokowanie grafiki
             BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -450,7 +448,7 @@ namespace TilesMaker
             sourcePicture.UnlockBits(bmSrc);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.shiftDown);
+            if (undoAdd) undo.CreateUndo(TransformType.shiftDown);
         }
 
         //przesówanie grafiki w prawo o jeden pixel
@@ -459,7 +457,7 @@ namespace TilesMaker
             ShiftRight();
         }
 
-        public unsafe void ShiftRight()
+        public unsafe void ShiftRight(bool undoAdd = true)
         {
             //blokowanie grafiki
             BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -489,7 +487,7 @@ namespace TilesMaker
             sourcePicture.UnlockBits(bmSrc);
             RefreshImageView();
 
-            undo.CreateUndo(TransformType.shiftRight);
+            if(undoAdd) undo.CreateUndo(TransformType.shiftRight);
         }
     }
 }

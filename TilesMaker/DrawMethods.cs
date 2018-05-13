@@ -16,12 +16,13 @@ namespace TilesMaker
 {
     public partial class TilesMaker
     {
-
         //wątek odpowiedzialny za rysowanie
         public void Drawer(object data)
         {
             for (;;)
             {
+                if (undoPhase || dumpLock) continue; //gdy obraz jest właśnie zmieniany przez cofanie lub ponawianie jest na chwile blokowany 
+
                 if (leftBrush)
                 {
                     //zabezpieczenie przed wyjściem z tablicy
@@ -107,6 +108,7 @@ namespace TilesMaker
                             endDrawLine = false;
                         }
                     }
+                    undo.BeginAddPixel();
                     leftBrush = true;
                 }
             }
@@ -130,6 +132,7 @@ namespace TilesMaker
                             endDrawLine = false;
                         }
                     }
+                    undo.BeginAddPixel();
                     rightBrush = true;
                 }
             }
@@ -141,6 +144,7 @@ namespace TilesMaker
             if (e.Button == MouseButtons.Left)
             {
                 leftBrush = false;
+                undo.SaveUndo();
                 if (brushType == 1 || brushType == 3 || brushType == 4)
                 {
                     endDrawLine = true;
@@ -150,37 +154,13 @@ namespace TilesMaker
             else if (e.Button == MouseButtons.Right)
             {
                 rightBrush = false;
+                undo.SaveUndo();
                 if (brushType == 1 || brushType == 3 || brushType == 4)
                 {
                     endDrawLine = true;
                 }
             }
         }
-
-        /*private void ThreadUndo()
-        {
-            if (undoPalette.Count > 0)
-            {
-                redoPalette.Add(new Bitmap(sourcePicture));
-                sourcePicture = new Bitmap(undoPalette.ElementAt(undoPalette.Count - 1));
-                undoPalette.RemoveAt(undoPalette.Count - 1);
-            }
-            undoPalette.Add(new Bitmap(sourcePicture));
-            undo = false;
-        }
-        //--
-
-        private void ThreadRedo()
-        {
-            if(redoPalette.Count > 0)
-            {
-                undoPalette.Add(new Bitmap(sourcePicture));
-                sourcePicture = new Bitmap(redoPalette.ElementAt(redoPalette.Count - 1));
-                redoPalette.RemoveAt(redoPalette.Count - 1);
-            }
-            redo = true;
-        }
-        //--*/
 
         //spisanie pozycji myszki
         private void SetMousePosition(object sender, MouseEventArgs e)
@@ -200,8 +180,15 @@ namespace TilesMaker
             lastScalePosX = x / 10;
             lastScalePosY = y / 10;
 
-            UInt32 tempColor = brushCol;//(uint)((brushCol.A << 24) | (brushCol.R << 16) | (brushCol.G << 8) | (brushCol.B << 0));
-            sourcePicture.SetPixel(posX, posY, Color.FromArgb((int)brushCol)); //główny obrazek wczytany z pliku
+            UInt32 tempColor = brushCol;
+
+            BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            UInt32* ptrSrc = (UInt32*)bmSrc.Scan0.ToPointer();
+
+            undo.AddPixelToUndo(posX, posY + 1, *(ptrSrc + posX + sourcePicture.Width * posY)); //zapisywanie starych kolorów
+            *(ptrSrc + posX + sourcePicture.Width * posY) = brushCol;
+
+            sourcePicture.UnlockBits(bmSrc);
 
             Bitmap dest = (Bitmap)MainImage.Image;
             Bitmap grayDest = (Bitmap)GrayImage.Image;
@@ -280,7 +267,6 @@ namespace TilesMaker
             startDrawPosY = -1;
             endDrawLine = false;
         }
-
 
         //rysowanie linii
         public unsafe void LineDraw(int x, int y, int brType)
@@ -515,6 +501,60 @@ namespace TilesMaker
                     }
                 }
                 multiQueue.Dequeue();
+            }
+
+            sourcePicture.UnlockBits(bmPicture);
+
+            mainPicture = new Bitmap(globalSize * scale, globalSize * scale, PixelFormat.Format32bppPArgb);
+            mainPicture = ChangeSize(sourcePicture, scale);
+
+            GrayImage.Image = ImageToGray(mainPicture, grayScaleValue);
+            MainImage.Image = mainPicture;
+            RefreshGridImage();
+        }
+
+        //wypełnianie pikseli z listy
+        public unsafe void DrawPixelFromList(List<TilesPixel> pixelList)
+        {
+            if (pixelList.Count == 0) return;
+
+            BitmapData bmPicture = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            UInt32* ptrPicture = (UInt32*)bmPicture.Scan0.ToPointer();
+
+            for(int el = 0; el < pixelList.Count; ++el)
+            {
+                *(ptrPicture + pixelList[el].posX + (pixelList[el].posY - 1) * globalSize) = pixelList[el].color;
+            }
+
+            sourcePicture.UnlockBits(bmPicture);
+
+            mainPicture = new Bitmap(globalSize * scale, globalSize * scale, PixelFormat.Format32bppPArgb);
+            mainPicture = ChangeSize(sourcePicture, scale);
+
+            GrayImage.Image = ImageToGray(mainPicture, grayScaleValue);
+            MainImage.Image = mainPicture;
+            RefreshGridImage();
+        }
+
+        //wypełnianie pikseli z listy kolorów
+        public unsafe void DrawPixelFromColorList(List<UInt32> pixelList)
+        {
+            if (pixelList.Count == 0) return;
+
+            globalSize = (int)pixelList[0];
+
+            newImageSize = globalSize;
+            sourcePicture = new Bitmap(newImageSize, newImageSize);
+            BitmapData bmPicture = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            UInt32* ptrPicture = (UInt32*)bmPicture.Scan0.ToPointer();
+
+            pixelList.RemoveAt(0);
+            for (int py = 0; py < globalSize; ++py)
+            {
+                for (int px = 0; px < globalSize; ++px)
+                {
+                    *(ptrPicture + px + (py) * globalSize) = pixelList[px * globalSize + py];
+                }
             }
 
             sourcePicture.UnlockBits(bmPicture);

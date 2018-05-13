@@ -167,7 +167,6 @@ namespace TilesMaker
                             {
                                 for(int h = 0; h < gridPixelSize; ++h)
                                 {
-                                    //*(ptrDest + row * image.Width + x + col * image.Height * dest.Width + y * dest.Width) = tempColor;
                                     *(ptrDest + row * image.Width * gridPixelSize + x * gridPixelSize + w + 
                                         col * image.Height * gridPixelSize * dest.Width + y * gridPixelSize * dest.Width + h * dest.Width) = tempColor;
                                 }

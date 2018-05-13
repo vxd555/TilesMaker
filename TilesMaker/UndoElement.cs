@@ -26,5 +26,10 @@ namespace TilesMaker
     {
         public List<TilesPixel> TilesPixels;
         public int transform;
+
+        public UndoElement()
+        {
+
+        }
     }
 }

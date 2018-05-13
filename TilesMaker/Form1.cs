@@ -46,8 +46,7 @@ namespace TilesMaker
 
         string          savePath = "";
 
-        bool            redoPhase = false;
-        bool            undoPhase = false;
+        public bool     undoPhase = false;
 
         //pędzle i ich własności
         List<UInt32>    brushColor;
@@ -89,6 +88,7 @@ namespace TilesMaker
 
             rnd = new Random();
 
+            undo = new UndoClass(this);
             //List<Bitmap> undoPalette = new List<Bitmap>();
             //List<Bitmap> redoPalette = new List<Bitmap>();
 
@@ -115,6 +115,12 @@ namespace TilesMaker
             serverSocket = null;
             clientSockets = new List<Socket>();
             clientAmount = 0;
+
+        }
+
+        public void DebugLog(string deb)
+        {
+            DEBUG.Text = deb;
         }
 
         private UInt32 RandomColor(int listID)

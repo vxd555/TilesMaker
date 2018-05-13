@@ -7,4 +7,3 @@ F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Release\TilesMaker.csproj
 F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Release\TilesMaker.csproj.CoreCompileInputs.cache
 F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Release\TilesMaker.exe
 F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Release\TilesMaker.pdb
-F:\C#\zzzProjects\TilesMaker\TilesMaker\TilesMaker\obj\Release\TilesMaker.csprojResolveAssemblyReference.cache

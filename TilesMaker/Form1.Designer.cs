@@ -89,6 +89,7 @@
             this.IPAdress = new System.Windows.Forms.TextBox();
             this.IPLabel = new System.Windows.Forms.Label();
             this.ConnectionInfo = new System.Windows.Forms.Label();
+            this.buttonSend = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GrayImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ColorGrid)).BeginInit();
@@ -314,11 +315,11 @@
             // 
             this.DEBUG.AutoSize = true;
             this.DEBUG.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.DEBUG.Location = new System.Drawing.Point(196, 822);
+            this.DEBUG.Location = new System.Drawing.Point(196, 817);
             this.DEBUG.Name = "DEBUG";
-            this.DEBUG.Size = new System.Drawing.Size(57, 17);
+            this.DEBUG.Size = new System.Drawing.Size(31, 17);
             this.DEBUG.TabIndex = 23;
-            this.DEBUG.Text = "DEBUG";
+            this.DEBUG.Text = "info";
             // 
             // ColorSelector
             // 
@@ -396,7 +397,7 @@
             // 
             this.RealTimeBrush.AutoSize = true;
             this.RealTimeBrush.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.RealTimeBrush.Location = new System.Drawing.Point(1084, 615);
+            this.RealTimeBrush.Location = new System.Drawing.Point(1084, 604);
             this.RealTimeBrush.Name = "RealTimeBrush";
             this.RealTimeBrush.Size = new System.Drawing.Size(188, 21);
             this.RealTimeBrush.TabIndex = 69;
@@ -408,7 +409,7 @@
             // 
             this.SettingsLabel.AutoSize = true;
             this.SettingsLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SettingsLabel.Location = new System.Drawing.Point(1147, 592);
+            this.SettingsLabel.Location = new System.Drawing.Point(1147, 581);
             this.SettingsLabel.Name = "SettingsLabel";
             this.SettingsLabel.Size = new System.Drawing.Size(59, 17);
             this.SettingsLabel.TabIndex = 70;
@@ -530,7 +531,7 @@
             this.SaveTypeLabel.AutoSize = true;
             this.SaveTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.SaveTypeLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SaveTypeLabel.Location = new System.Drawing.Point(1084, 655);
+            this.SaveTypeLabel.Location = new System.Drawing.Point(1084, 644);
             this.SaveTypeLabel.Name = "SaveTypeLabel";
             this.SaveTypeLabel.Size = new System.Drawing.Size(87, 20);
             this.SaveTypeLabel.TabIndex = 81;
@@ -541,7 +542,7 @@
             this.SaveBothRadio.AutoSize = true;
             this.SaveBothRadio.Checked = true;
             this.SaveBothRadio.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SaveBothRadio.Location = new System.Drawing.Point(1084, 689);
+            this.SaveBothRadio.Location = new System.Drawing.Point(1084, 678);
             this.SaveBothRadio.Name = "SaveBothRadio";
             this.SaveBothRadio.Size = new System.Drawing.Size(58, 21);
             this.SaveBothRadio.TabIndex = 82;
@@ -554,7 +555,7 @@
             // 
             this.SaveColorRadio.AutoSize = true;
             this.SaveColorRadio.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SaveColorRadio.Location = new System.Drawing.Point(1084, 716);
+            this.SaveColorRadio.Location = new System.Drawing.Point(1084, 705);
             this.SaveColorRadio.Name = "SaveColorRadio";
             this.SaveColorRadio.Size = new System.Drawing.Size(93, 21);
             this.SaveColorRadio.TabIndex = 83;
@@ -567,7 +568,7 @@
             // 
             this.SaveGrayRadio.AutoSize = true;
             this.SaveGrayRadio.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SaveGrayRadio.Location = new System.Drawing.Point(1084, 743);
+            this.SaveGrayRadio.Location = new System.Drawing.Point(1084, 732);
             this.SaveGrayRadio.Name = "SaveGrayRadio";
             this.SaveGrayRadio.Size = new System.Drawing.Size(90, 21);
             this.SaveGrayRadio.TabIndex = 84;
@@ -580,7 +581,7 @@
             this.ChangeGrayScaleLabel.AutoSize = true;
             this.ChangeGrayScaleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.ChangeGrayScaleLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ChangeGrayScaleLabel.Location = new System.Drawing.Point(1084, 784);
+            this.ChangeGrayScaleLabel.Location = new System.Drawing.Point(1084, 772);
             this.ChangeGrayScaleLabel.Name = "ChangeGrayScaleLabel";
             this.ChangeGrayScaleLabel.Size = new System.Drawing.Size(149, 20);
             this.ChangeGrayScaleLabel.TabIndex = 86;
@@ -592,7 +593,7 @@
             this.GrayMaskedText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GrayMaskedText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.GrayMaskedText.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.GrayMaskedText.Location = new System.Drawing.Point(1250, 784);
+            this.GrayMaskedText.Location = new System.Drawing.Point(1250, 772);
             this.GrayMaskedText.Mask = "999";
             this.GrayMaskedText.Name = "GrayMaskedText";
             this.GrayMaskedText.PromptChar = ' ';
@@ -669,7 +670,7 @@
             // 
             // HostButton
             // 
-            this.HostButton.Location = new System.Drawing.Point(1222, 815);
+            this.HostButton.Location = new System.Drawing.Point(1222, 805);
             this.HostButton.Name = "HostButton";
             this.HostButton.Size = new System.Drawing.Size(68, 31);
             this.HostButton.TabIndex = 94;
@@ -679,9 +680,9 @@
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(1148, 814);
+            this.ConnectButton.Location = new System.Drawing.Point(1130, 805);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(68, 31);
+            this.ConnectButton.Size = new System.Drawing.Size(86, 31);
             this.ConnectButton.TabIndex = 95;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -690,7 +691,7 @@
             // IPAdress
             // 
             this.IPAdress.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.1F);
-            this.IPAdress.Location = new System.Drawing.Point(1007, 816);
+            this.IPAdress.Location = new System.Drawing.Point(992, 805);
             this.IPAdress.Name = "IPAdress";
             this.IPAdress.Size = new System.Drawing.Size(135, 27);
             this.IPAdress.TabIndex = 96;
@@ -700,7 +701,7 @@
             this.IPLabel.AutoSize = true;
             this.IPLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.IPLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.IPLabel.Location = new System.Drawing.Point(972, 818);
+            this.IPLabel.Location = new System.Drawing.Point(954, 813);
             this.IPLabel.Name = "IPLabel";
             this.IPLabel.Size = new System.Drawing.Size(29, 20);
             this.IPLabel.TabIndex = 97;
@@ -716,13 +717,26 @@
             this.ConnectionInfo.Size = new System.Drawing.Size(21, 20);
             this.ConnectionInfo.TabIndex = 98;
             this.ConnectionInfo.Text = "...";
+            this.ConnectionInfo.Visible = false;
+            // 
+            // buttonSend
+            // 
+            this.buttonSend.Enabled = false;
+            this.buttonSend.Location = new System.Drawing.Point(65, 808);
+            this.buttonSend.Name = "buttonSend";
+            this.buttonSend.Size = new System.Drawing.Size(68, 28);
+            this.buttonSend.TabIndex = 99;
+            this.buttonSend.Text = "Send";
+            this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
             // 
             // TilesMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(1302, 857);
+            this.ClientSize = new System.Drawing.Size(1302, 861);
+            this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.ConnectionInfo);
             this.Controls.Add(this.IPLabel);
             this.Controls.Add(this.IPAdress);
@@ -860,6 +874,7 @@
         private System.Windows.Forms.TextBox IPAdress;
         private System.Windows.Forms.Label IPLabel;
         private System.Windows.Forms.Label ConnectionInfo;
+        private System.Windows.Forms.Button buttonSend;
     }
 }
 

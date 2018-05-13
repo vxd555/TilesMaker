@@ -26,6 +26,34 @@ namespace TilesMaker
         Thread clientThread;
         int clientAmount;
 
+        List<UInt32> dumpImage;
+        Byte[] dumpBytes;
+        bool dumpLock = false;
+
+        private unsafe void DumpImageToList()
+        {
+            dumpLock = true;
+
+            dumpImage = new List<UInt32>();
+            dumpImage.Add((uint)globalSize);
+
+            BitmapData bmSrc = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            UInt32* ptrSrc = (UInt32*)bmSrc.Scan0.ToPointer();
+
+            for(int px = 0; px < globalSize; ++px)
+            {
+                for (int py = 0; py < globalSize; ++py)
+                {
+                    dumpImage.Add(*(ptrSrc + px + sourcePicture.Width * py));
+                }
+            }
+
+            sourcePicture.UnlockBits(bmSrc);
+            dumpLock = false;
+
+            dumpBytes = dumpImage.SelectMany(BitConverter.GetBytes).ToArray();
+        }
+
         //gdy kilkniemy button połącz
         private void ConnectButton_Click(object sender, EventArgs e)
         {
@@ -47,7 +75,12 @@ namespace TilesMaker
             IPAddress tempAddress = IPAddress.Parse(IPAdress.Text); //stwworzenie z adresu 
             serverSocket.Bind(new IPEndPoint(tempAddress, 1338));
 
-            ConnectionInfo.Text = IPAdress.Text; //spisywanie adresu aby użytkownik widział
+            DEBUG.Text = IPAdress.Text; //spisywanie adresu aby użytkownik widział
+
+            HostButton.Visible = false;
+            ConnectButton.Visible = false;
+            IPAdress.Visible = false;
+            IPLabel.Visible = false;
 
             serverSocket.Listen(0);
 
@@ -66,18 +99,20 @@ namespace TilesMaker
                     Socket tempsoc = null;
                     tempsoc = serverSocket.Accept();
                     clientSockets.Add(tempsoc);
-                    ConnectionInfo.Text = "accept";
+                    DEBUG.Text = "accept connection";
+
+                    buttonSend.Enabled = true;
                 }
                 else
                 {
                     if (clientAmount == 0)
                     {
-                        byte[] buffer = Encoding.Default.GetBytes("connect is complite");
+                        byte[] buffer = Encoding.Default.GetBytes("connection complete");
                         clientSockets[clientAmount].Send(buffer, 0, buffer.Length, 0);
                         ++clientAmount;
                     }
 
-                    byte[] recived = new byte[255];
+                    byte[] recived = new byte[16388];
 
                     for (int i = 0; i < clientSockets.Count; ++i)
                     {
@@ -86,7 +121,7 @@ namespace TilesMaker
 
                         if (rec > 0)
                         {
-                            ConnectionInfo.Text = Encoding.Default.GetString(recived);
+                            DEBUG.Text = Encoding.Default.GetString(recived);
                         }
 
                         rec = 0;
@@ -96,21 +131,52 @@ namespace TilesMaker
             }
         }
 
+        public void SendImage()
+        {
+            DumpImageToList();
+            clientSockets[0].Send(dumpBytes, 0, dumpBytes.Length, 0);
+            
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            SendImage();
+        }
+
         //pętla klienta odpowiedzialna za odbieranie
         private void ClientLoop()
         {
             for (; ; )
             {
-                byte[] recived = new byte[255];
+                byte[] recived = new byte[16388]; //16388
 
                 int rec = serverSocket.Receive(recived, 0, recived.Length, 0);
                 Array.Resize(ref recived, rec);
 
                 if (rec > 0)
                 {
-                    ConnectionInfo.Text = Encoding.Default.GetString(recived);
-                }
+                    if(rec < 50) //komunikaty
+                    {
+                        DEBUG.Text = Encoding.Default.GetString(recived);
 
+                        HostButton.Visible = false;
+                        ConnectButton.Visible = false;
+                        IPAdress.Visible = false;
+                        IPLabel.Visible = false;
+                    }
+                    else
+                    {
+                        dumpImage = new List<UInt32>();
+                        for(int el = 0; el < recived.Length / 4; ++el)
+                        {
+                            byte[] byteImage = {recived[el * 4 + 0], recived[el * 4 + 1], recived[el * 4 + 2], recived[el * 4 + 3]};
+                            dumpImage.Add(BitConverter.ToUInt32(byteImage, 0));
+                        }
+
+                        DrawPixelFromColorList(dumpImage);
+                    }
+                    
+                }
                 rec = 0;
 
             }

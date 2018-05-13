@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TilesMaker
 {
-    class TilesPixel
+    public class TilesPixel
     {
         public int posX;
         public int posY;
