@@ -116,6 +116,8 @@ namespace TilesMaker
             clientSockets = new List<Socket>();
             clientAmount = 0;
 
+
+            //this.MainImage.
         }
 
         public void DebugLog(string deb)
@@ -245,6 +247,14 @@ namespace TilesMaker
             }
         }
 
-        
+        private void DropEnter(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            if(files.Length > 0)
+            {
+                Properties.Settings.Default.basePath = files[0];
+                LoadFile(files[0]);
+            }
+        }
     }
 }

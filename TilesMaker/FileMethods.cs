@@ -162,37 +162,43 @@ namespace TilesMaker
             {
                 string file = OpenImageWin.FileName;
                 Properties.Settings.Default.basePath = file;
-                try
+                LoadFile(file);
+            }
+        }
+
+        private unsafe void LoadFile(string file)
+        {
+            try
+            {
+                //ładowanie grafiki z pliku
+                FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read);
+                Bitmap tempMap = (Bitmap)Image.FromStream(stream);
+
+                int tempW = tempMap.Width;
+                int tempH = tempMap.Height;
+                if (tempH == tempW) //sprawdzanie czy grafika jest odpowiedniego rzmiaru
                 {
-                    //ładowanie grafiki z pliku
-                    FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read);
-                    Bitmap tempMap = (Bitmap)Image.FromStream(stream);
-
-                    int tempW = tempMap.Width;
-                    int tempH = tempMap.Height;
-                    if (tempH == tempW) //sprawdzanie czy grafika jest odpowiedniego rzmiaru
+                    if (tempW == 64 || tempW == 32 || tempW == 16 || tempW == 8 || tempW == 4)
                     {
-                        if (tempW == 64 || tempW == 32 || tempW == 16 || tempW == 8 || tempW == 4)
-                        {
-                            sourcePicture = tempMap; //wczytanie i odświerzenie grafiki
-                            globalSize = tempW; //zapisanie wielkości obrazka
-                            RewindSize(); //odświerzenie informacji o obrazku
-                            RefreshImageView(); //odświerzenie obrazków
-                            RefreshLabels(); //odświerzenie etykiet
+                        sourcePicture = tempMap; //wczytanie i odświerzenie grafiki
+                        globalSize = tempW; //zapisanie wielkości obrazka
+                        RewindSize(); //odświerzenie informacji o obrazku
+                        RefreshImageView(); //odświerzenie obrazków
+                        RefreshLabels(); //odświerzenie etykiet
 
-                            savePath = file; //zapisanie ścieżki do pliku by można było ją szybko zapisać
-                        }
-                        else DEBUG.Text = "image have bad size";
-
+                        savePath = file; //zapisanie ścieżki do pliku by można było ją szybko zapisać
                     }
                     else DEBUG.Text = "image have bad size";
-                    stream.Close();
-                }
-                catch (IOException)
-                {
 
                 }
+                else DEBUG.Text = "image have bad size";
+                stream.Close();
             }
+            catch (IOException)
+            {
+
+            }
+            
         }
     }
 }

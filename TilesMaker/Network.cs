@@ -30,6 +30,8 @@ namespace TilesMaker
         Byte[] dumpBytes;
         bool dumpLock = false;
 
+        bool isServer = false;
+
         private unsafe void DumpImageToList()
         {
             dumpLock = true;
@@ -84,6 +86,8 @@ namespace TilesMaker
 
             serverSocket.Listen(0);
 
+            isServer = true;
+
             serverThread = new Thread(ServerLoop);
             serverThread.IsBackground = true;
             serverThread.Start();
@@ -122,6 +126,21 @@ namespace TilesMaker
                         if (rec > 0)
                         {
                             DEBUG.Text = Encoding.Default.GetString(recived);
+                            if (rec < 50) //komunikaty
+                            {
+                                DEBUG.Text = Encoding.Default.GetString(recived);
+                            }
+                            else
+                            {
+                                dumpImage = new List<UInt32>();
+                                for (int el = 0; el < recived.Length / 4; ++el)
+                                {
+                                    byte[] byteImage = { recived[el * 4 + 0], recived[el * 4 + 1], recived[el * 4 + 2], recived[el * 4 + 3] };
+                                    dumpImage.Add(BitConverter.ToUInt32(byteImage, 0));
+                                }
+
+                                DrawPixelFromColorList(dumpImage);
+                            }
                         }
 
                         rec = 0;
@@ -133,9 +152,17 @@ namespace TilesMaker
 
         public void SendImage()
         {
-            DumpImageToList();
-            clientSockets[0].Send(dumpBytes, 0, dumpBytes.Length, 0);
-            
+            if(isServer)
+            {
+                DumpImageToList();
+                clientSockets[0].Send(dumpBytes, 0, dumpBytes.Length, 0);
+            }
+            else
+            {
+                DumpImageToList();
+                serverSocket.Send(dumpBytes, 0, dumpBytes.Length, 0);
+            }
+
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
@@ -146,6 +173,7 @@ namespace TilesMaker
         //pętla klienta odpowiedzialna za odbieranie
         private void ClientLoop()
         {
+            buttonSend.Enabled = true;
             for (; ; )
             {
                 byte[] recived = new byte[16388]; //16388

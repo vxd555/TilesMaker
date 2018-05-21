@@ -268,6 +268,7 @@
             this.MainImage.Size = new System.Drawing.Size(427, 394);
             this.MainImage.TabIndex = 18;
             this.MainImage.TabStop = false;
+            this.MainImage.DragEnter += new System.Windows.Forms.DragEventHandler(this.DropEnter);
             this.MainImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BeginDraw);
             this.MainImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SetMousePosition);
             this.MainImage.MouseUp += new System.Windows.Forms.MouseEventHandler(this.EndDraw);
@@ -306,6 +307,7 @@
             this.LoadButton.TabIndex = 22;
             this.LoadButton.UseVisualStyleBackColor = false;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            this.LoadButton.DragEnter += new System.Windows.Forms.DragEventHandler(this.DropEnter);
             // 
             // OpenImageWin
             // 
@@ -732,6 +734,7 @@
             // 
             // TilesMaker
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
@@ -801,6 +804,7 @@
             this.Name = "TilesMaker";
             this.Text = "TilesMaker";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.DropEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GetHotKeys);
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GrayImage)).EndInit();
