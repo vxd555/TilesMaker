@@ -421,7 +421,6 @@ namespace TilesMaker
             int posX = (x / scale);
             int posY = (y / scale);
 
-            //if (sourcePicture.GetPixel(posX, posY) == Color.FromArgb((int)brushCol)) return;
             if (lastScalePosX == x / scale && lastScalePosY == y / scale) return;
             lastScalePosX = x / scale;
             lastScalePosY = y / scale;
@@ -437,7 +436,9 @@ namespace TilesMaker
 
             UInt32 tempColor = RandomColor(brType);
 
-            BitmapData bmPicture = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            BitmapData bmPicture = sourcePicture.LockBits(new Rectangle(Point.Empty, sourcePicture.Size), 
+                                                                                    ImageLockMode.ReadWrite, 
+                                                                                    PixelFormat.Format32bppArgb);
             UInt32* ptrPicture = (UInt32*)bmPicture.Scan0.ToPointer();
 
             UInt32 getColor = *(ptrPicture + posX + posY * globalSize); //kolor który będzie przerabiany
